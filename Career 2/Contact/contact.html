@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script type="text/javascript" src="app.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <title>Care.er | Contact</title>
+  </head>
+  <body ng-app="myApp">
+    <header>
+      <div class="logo">
+        <h1>Care.er</h1>
+      </div>
+      <nav class="navbar">
+        <ul class="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../Careers/careers.html">Careers</a></li>
+          <li><a href="../About/about.html">About</a></li>
+          <li><a href="../FAQ/faq.html">FAQ</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="heading">
+      <h1><u>C</u>ontact <u>U</u>s</h1>
+    </div>
+
+    <main ng-controller="contact">
+      <p>{{contactFrom}}</p>
+      <form
+        data-netlify="true"
+        autocomplete="off"
+        name="contactForm"
+        class="contact-form"
+        method="POST"
+        data-aos="fade-up"
+        data-aos-easing="linear"
+        data-aos-delay="300"
+        novalidate
+        ng-submit="submitForm(contactName, contactEmail,contactMobo, contactMessage)"
+      >
+        <div class="form-content">
+          <label for="name"> Name: </label>
+
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="eg. John Doe"
+            ng-model="contactName"
+            ng-required="true"
+          />
+
+          <div ng-show="contactForm.name.$touched && contactForm.name.$invalid">
+            <small style="color: red; display: block; text-align: center">
+              Enter a valid damn name you idiot
+            </small>
+          </div>
+
+          <!-- <p>{{contactName}}</p> -->
+
+          <label for="email"> Email: </label>
+
+          <input
+            type="text"
+            id="email"
+            name="email"
+            placeholder="eg. john.doe@example.com"
+            ng-model="contactEmail"
+            ng-required="true"
+          />
+
+          <div
+            ng-show="contactForm.email.$touched && contactForm.email.$invalid"
+          >
+            <small style="color: red; display: block; text-align: center">
+              Enter a valid damn email you idiot
+            </small>
+          </div>
+
+          <label for="mobile no."> Mobile number: </label>
+
+          <input
+            type="text"
+            id="mobno"
+            name="mobno"
+            placeholder="eg. 987-654-43210"
+            ng-model="contactMobo"
+            ng-required="true"
+          />
+
+          <div
+            ng-show="contactForm.mobno.$touched && contactForm.mobno.$invalid"
+          >
+            <small style="color: red; display: block; text-align: center">
+              Enter a valid damn mobile number you idiot
+            </small>
+          </div>
+
+          <label for="message"> Message: </label>
+
+          <textarea
+            class="accept-message"
+            name="message"
+            id="message"
+            placeholder="eg. I would like to get in contact with you to avail your services..."
+            ng-model="contactMessage"
+            ng-required="true"
+          ></textarea>
+
+          <div
+            ng-show="contactForm.message.$touched && contactForm.message.$invalid"
+          >
+            <small style="color: red; display: block; text-align: center">
+              Enter a valid damn message you idiot
+            </small>
+          </div>
+
+          <div class="submit-button">
+            <button
+              type="submit"
+              ng-disabled="contactForm.$invalid"
+              class="button"
+            >
+              Submit
+            </button>
+          </div>
+          <div>
+            <small style="color: red; display: block; text-align: center">
+              {{err}}
+            </small>
+          </div>
+
+          <div>
+            <small
+              style="
+                color: green;
+                display: block;
+                text-align: center;
+                margin-top: 5px"
+            >
+              {{succ}}
+            </small>
+          </div>
+        </div>
+      </form>
+    </main>
+
+    <footer>
+      <div class="footer-content">
+        <p>&#169;Care.er Professional Services</p>
+        <p>All Rights Reserved</p>
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+    <script>
+      var app = angular.module("myApp", []);
+      app.controller("contact", function ($scope, $http) {
+        // console.log($scope.contactName, $scope.contactMessage);
+        $scope.succ = "";
+        $scope.err = "";
+
+        $scope.submitForm = function (a, b, c, d) {
+          console.log(`${a} ${b} ${c} ${d}`);
+          $http({
+            method: "POST",
+            url: "/contactSend",
+            data: {
+              name: a,
+              mobilenumber: c,
+              email: b,
+              message: d,
+            },
+          })
+            .then(() => {
+              $scope.succ = "DOne!!";
+            })
+            .catch((error) => {
+              $scope.err = "Error please check form";
+            });
+        };
+      });
+    </script>
+  </body>
+</html>
